@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="HospitalTECnologicoConnectionString-Web.config Connection String" description="HospitalTECnologicoConnectionString Connection String used in web.config by the application to access the database." defaultValue="Server=192.168.0.132;Port=5432;Database=TecNologicoDB;User Id=postgres;Password=1234" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\alekm\\source\\repos\\HospitalTECnologico\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='HospitalTECnologicoConnectionString']/@connectionString" />
+  </parameter>
+  <parameter name="TestContext-Web.config Connection String" description="TestContext Connection String used in web.config by the application to access the database." defaultValue="Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=TestContext-20200731222640; Integrated Security=True; MultipleActiveResultSets=True; AttachDbFilename=|DataDirectory|TestContext-20200731222640.mdf" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\alekm\\source\\repos\\HospitalTECnologico\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TestContext']/@connectionString" />
+  </parameter>
+</parameters>

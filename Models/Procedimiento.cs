@@ -23,10 +23,10 @@ namespace HospitalTECnologico.Models
     {
         public readProcedimiento(DataRow row)
         {
-            IdProcedimiento = Convert.ToInt32(row["idpersonal"]);
+            IdProcedimiento = Convert.ToInt32(row["idprocedimiento"]);
             Nombre = row["nombre"].ToString();
             Tratamiento = row["Tratamiento"].ToString();
-            DiasRecuperacion = Convert.ToInt32(row["dias"]);
+            DiasRecuperacion = Convert.ToInt32(row["diasrecuperacion"]);
             
         }
     }

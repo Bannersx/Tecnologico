@@ -14,12 +14,10 @@ namespace HospitalTECnologico.Models
         public string Apellido1 { get; set; }
         public string Apellido2 { get; set; }
         public DateTime FechaNacimiento { get; set; } //USAMOS STRING PARA LAS FECHAS?
-        public int Dierccion { get; set; }
-        public int UCI { get; set; }
-        public int Internado { get; set; }
-        public bool Alta { get; set; }
+        public int Direccion { get; set; }
+        
         public string Telefono { get; set; }
-        public string EMail { get; set; }
+        
 
     }
 
@@ -36,9 +34,9 @@ namespace HospitalTECnologico.Models
             Apellido1 = row["Apellido1"].ToString();
             Apellido2 = row["Apellido2"].ToString();
             Telefono = row["telefono"].ToString();
+            Direccion = Convert.ToInt32(row["direccion"]);
             FechaNacimiento = Convert.ToDateTime(row["fechanacimiento"].ToString());
-            Dierccion = Convert.ToInt32(row["Direccion"]);
-            Alta = Convert.ToBoolean(row["alta"].ToString());
+            
             
         }
     }

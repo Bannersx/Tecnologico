@@ -32,6 +32,7 @@ namespace HospitalTECnologico.Models
             FechaIngreso = Convert.ToDateTime(row["fechaingreso"].ToString());
             FechaSalida = Convert.ToDateTime(row["fechasalida"].ToString());
             idCama = Convert.ToInt32(row["idcama"]);
+            idPaciente = Convert.ToInt32(row["idpaciente"].ToString());
             
 
         }

@@ -24,7 +24,7 @@ namespace HospitalTECnologico.Models
     {
         public readSalon(DataRow row)
         {
-            IdSalon = Convert.ToInt32(row["idpersonal"]);
+            IdSalon = Convert.ToInt32(row["idsalon"]);
             Nombre = row["nombre"].ToString();
             Capacidad = Convert.ToInt32(row["capacidad"]);
             Tipo = Convert.ToInt32(row["tipo"]);

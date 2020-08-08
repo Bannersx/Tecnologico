@@ -21,8 +21,7 @@ namespace HospitalTECnologico.Controllers
 
 
             // PostgeSQL-style connection string
-            string connstring = String.Format("Server=localhost;Port=5432;" +
-                "User Id=postgres;Password=1234;Database=TecNologicoDB;");
+            string connstring = String.Format("Server = tecnologicodb.postgres.database.azure.com; Database =postgres; Port = 5432; User Id = alex@tecnologicodb; Password =tecnologico123!; Ssl Mode = Require;");
             // Making connection with Npgsql provider
             NpgsqlConnection conn = new NpgsqlConnection(connstring);
             conn.Open();
@@ -64,13 +63,12 @@ namespace HospitalTECnologico.Controllers
         {
 
             // PostgeSQL-style connection string
-            string connstring = String.Format("Server=localhost;Port=5432;" +
-                "User Id=postgres;Password=1234;Database=TecNologicoDB;");
+            string connstring = String.Format("Server = tecnologicodb.postgres.database.azure.com; Database =postgres; Port = 5432; User Id = alex@tecnologicodb; Password =tecnologico123!; Ssl Mode = Require;");
             // Making connection with Npgsql provider
             NpgsqlConnection conn = new NpgsqlConnection(connstring);
             conn.Open();
             // quite complex sql statement
-            string sql = "SELECT * FROM reservacion WHERE idpaciente ="+id+" ORDER BY fechaingreso DESC;";
+            string sql = "SELECT * FROM patient_history("+id+");";
             // data adapter making request from our connection
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, conn);
             // i always reset DataSet before i do
@@ -83,12 +81,12 @@ namespace HospitalTECnologico.Controllers
             // since we only showing the result we don't need connection anymore
             conn.Close();
 
-            List<HospitalTECnologico.Models.Reservacion> patologias = new List<HospitalTECnologico.Models.Reservacion>(dt.Rows.Count);
+            List<HospitalTECnologico.Models.HistorialProcedimiento> patologias = new List<HospitalTECnologico.Models.HistorialProcedimiento>(dt.Rows.Count);
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow patologiaRecord in dt.Rows)
                 {
-                    patologias.Add(new readReservacion(patologiaRecord));
+                    patologias.Add(new readHistorialProcedimiento(patologiaRecord));
                 }
             }
 
@@ -103,8 +101,7 @@ namespace HospitalTECnologico.Controllers
         // POST: api/Values
         public HttpResponseMessage Post([FromBody] createReservacion value)
         {
-            NpgsqlConnection connstring = new NpgsqlConnection("Server=localhost;Port=5432;" +
-                "User Id=postgres;Password=1234;Database=TecNologicoDB;");
+            NpgsqlConnection connstring = new NpgsqlConnection("Server = tecnologicodb.postgres.database.azure.com; Database =postgres; Port = 5432; User Id = alex@tecnologicodb; Password =tecnologico123!; Ssl Mode = Require;");
 
             int size = value.Procedimientos.Length;
 
@@ -163,6 +160,8 @@ namespace HospitalTECnologico.Controllers
         // DELETE api/values/5
         public void Delete(int id)
         {
+
+            ///Hay que indicar que las reservaciones no se borran
         }
     }
 }

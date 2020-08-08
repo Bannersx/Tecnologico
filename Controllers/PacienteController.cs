@@ -1,13 +1,13 @@
-﻿using System;
+﻿using HospitalTECnologico.Models;
+using Newtonsoft.Json;
+using Npgsql;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.SqlClient;
+using System.Data;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Npgsql;
-using System.Data;
-using Newtonsoft.Json;
-using HospitalTECnologico.Models;
 
 namespace HospitalTECnologico.Controllers
 {
@@ -21,8 +21,7 @@ namespace HospitalTECnologico.Controllers
 
 
             // PostgeSQL-style connection string
-            string connstring = String.Format("Server=localhost;Port=5432;" +
-                "User Id=postgres;Password=1234;Database=TecNologicoDB;");
+            string connstring = String.Format("Server = tecnologicodb.postgres.database.azure.com; Database =postgres; Port = 5432; User Id = alex@tecnologicodb; Password =tecnologico123!; Ssl Mode = Require;");
             // Making connection with Npgsql provider
             NpgsqlConnection conn = new NpgsqlConnection(connstring);
             conn.Open();
@@ -48,7 +47,7 @@ namespace HospitalTECnologico.Controllers
                     patologias.Add(new readPaciente(patologiaRecord));
                 }
             }
-            
+
 
 
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
@@ -63,13 +62,12 @@ namespace HospitalTECnologico.Controllers
         public HttpResponseMessage Get(int id)
         {
             // PostgeSQL-style connection string
-            string connstring = String.Format("Server=localhost;Port=5432;" +
-                "User Id=postgres;Password=1234;Database=TecNologicoDB;");
+            string connstring = String.Format("Server = tecnologicodb.postgres.database.azure.com; Database =postgres; Port = 5432; User Id = alex@tecnologicodb; Password =tecnologico123!; Ssl Mode = Require;");
             // Making connection with Npgsql provider
             NpgsqlConnection conn = new NpgsqlConnection(connstring);
             conn.Open();
             // quite complex sql statement
-            string sql = "SELECT * FROM paciente WHERE idpaciente ="+id;
+            string sql = "SELECT * FROM paciente WHERE idpaciente =" + id;
             // data adapter making request from our connection
             NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, conn);
             // i always reset DataSet before i do
@@ -100,12 +98,29 @@ namespace HospitalTECnologico.Controllers
         }
 
         // POST: api/Test
-        public HttpResponseMessage Post([FromBody]createPaciente value)
+        public HttpResponseMessage Post([FromBody] createPaciente value)
         {
-            NpgsqlConnection connstring = new NpgsqlConnection("Server=localhost;Port=5432;" +
-                "User Id=postgres;Password=1234;Database=TecNologicoDB;");
+            //--------------SQLSTUFF----------------------/
+            SqlConnection constr = new SqlConnection("Server=tcp:cotect2020.database.windows.net,1433;Initial Catalog=CoTEC20;Persist Security Info=False;User ID=alex;Password=cotec20!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
 
-            var query = "INSERT INTO public.paciente (idpaciente, nombre, apellido1, apellido2, telefono, fechanacimiento, direccion, alta) values(@idpaciente, @nombre, @apellido1, @apellido2, @telefono, @fechanacimiento, @direccion, @alta)";
+            var sqlquery = "INSERT INTO dbo.paciente (idpaciente, nombre, apellido1, apellido2, telefono, fechanacimiento, direccion) values(@idpaciente, @nombre, @apellido1, @apellido2, @telefono, @fechanacimiento, @direccion)";
+
+            SqlCommand insertsqlcommand = new SqlCommand(sqlquery, constr);
+            insertsqlcommand.Parameters.AddWithValue("@idpaciente", value.Identificacion);
+            insertsqlcommand.Parameters.AddWithValue("@nombre", value.Nombre);
+            insertsqlcommand.Parameters.AddWithValue("@apellido1", value.Apellido1);
+            insertsqlcommand.Parameters.AddWithValue("@apellido2", value.Apellido2);
+            insertsqlcommand.Parameters.AddWithValue("@telefono", value.Telefono);
+            insertsqlcommand.Parameters.AddWithValue("@fechanacimiento", value.FechaNacimiento);
+            insertsqlcommand.Parameters.AddWithValue("@direccion", value.Direccion);
+
+            constr.Open();
+
+
+            //-------------- FOR POSTGRESQL--------------------------------//
+            NpgsqlConnection connstring = new NpgsqlConnection("Server = tecnologicodb.postgres.database.azure.com; Database =postgres; Port = 5432; User Id = alex@tecnologicodb; Password =tecnologico123!; Ssl Mode = Require;");
+
+            var query = "INSERT INTO public.paciente (idpaciente, nombre, apellido1, apellido2, telefono, fechanacimiento, direccion) values(@idpaciente, @nombre, @apellido1, @apellido2, @telefono, @fechanacimiento, @direccion)";
 
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
             response.Headers.Add("Access-Control-Allow-Origin", "*");
@@ -119,8 +134,8 @@ namespace HospitalTECnologico.Controllers
             insertCommand.Parameters.AddWithValue("@apellido2", value.Apellido2);
             insertCommand.Parameters.AddWithValue("@telefono", value.Telefono);
             insertCommand.Parameters.AddWithValue("@fechanacimiento", value.FechaNacimiento);
-            insertCommand.Parameters.AddWithValue("@direccion", value.Dierccion);
-            insertCommand.Parameters.AddWithValue("@alta", value.Alta);
+            insertCommand.Parameters.AddWithValue("@direccion", value.Direccion);
+
             connstring.Open();
             int result = insertCommand.ExecuteNonQuery();
             if (result > 0)
@@ -136,7 +151,7 @@ namespace HospitalTECnologico.Controllers
         }
 
         // PUT: api/Test/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 
@@ -150,8 +165,7 @@ namespace HospitalTECnologico.Controllers
             response.Headers.Add("Access-Control-Allow-Origin", "*");
 
             //Connection String 
-            NpgsqlConnection connect = new NpgsqlConnection("Server=localhost;Port=5432;" +
-                "User Id=postgres;Password=1234;Database=TecNologicoDB;");
+            NpgsqlConnection connect = new NpgsqlConnection("Server = tecnologicodb.postgres.database.azure.com; Database =postgres; Port = 5432; User Id = alex@tecnologicodb; Password =tecnologico123!; Ssl Mode = Require;");
             //Query String
             var query = "DELETE FROM public.paciente WHERE idpaciente=" + id;
             //Creating the sql command
